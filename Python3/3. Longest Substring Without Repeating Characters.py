@@ -1,14 +1,17 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        temp = ''
-        ans = 0
-        for c in s:
-            #print("c: " + c)
-            if c not in temp:
-                temp += c
-            else:
-                temp = temp.split(c)[1] + c
+        ans, left, right = 0, 0, 0
+        char = [0]*128
+        
+        while right < len(s):
             
-            ans = max(len(temp), ans)
+            char[ord(s[right])] += 1
+            
+            while char[ord(s[right])] > 1:
+                char[ord(s[left])] -= 1
+                left += 1
+            
+            ans = max(ans, right-left+1)
+            right += 1
                   
         return ans
