@@ -23,3 +23,28 @@ class Solution:
         root.right = self.buildTree(inorder[index+1:], postorder[index:-1])
         
         return root
+
+
+# Solution 2: O(n) time and O(n) space
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        mapping = {}
+        
+        for i in range(len(postorder)):
+            mapping[inorder[i]] = i
+            
+            
+        def arrayTree(left, right):
+            if left>right:
+                return None
+            
+            value = postorder.pop()
+            index = mapping[value]
+            
+            root = TreeNode(value)
+            root.right = arrayTree(index+1, right)
+            root.left = arrayTree(left, index-1)
+            
+            return root
+        
+        return arrayTree(0, len(inorder)-1)
