@@ -1,3 +1,21 @@
+# One-pass more intuitive
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        right, subsum = 0, 0
+        ans = float('-inf')
+        
+        while right < len(nums):
+            subsum += nums[right]
+            ans = max(ans, subsum)
+            right += 1
+            
+            # start over if current subarray sums to negative
+            if subsum< 0:
+                subsum = 0
+            
+        return ans
+
+# DP
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         
