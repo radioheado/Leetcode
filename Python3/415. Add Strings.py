@@ -1,39 +1,20 @@
 class Solution:
-    def addStrings(self, x: str, y: str) -> str:
-        i = 0       # index
-        c = 0       # carry value
-        ans = []
-        x = x[::-1]
-        y = y[::-1]
+    def addStrings(self, num1: str, num2: str) -> str:
+        if len(num1) < len(num2):
+            return self.addStrings(num2, num1)
         
-        while i<len(x) or i<len(y):
+        num1 = num1[::-1]
+        num2 = num2[::-1]
+        carry = 0
+        ans = ""
+        
+        for i, n in enumerate(num1):
+            n1 = int(n)
+            n2 = int(num2[i]) if i < len(num2) else 0
+            carry, rem = divmod(carry+n1+n2, 10)
+            ans = str(rem) + ans
+        
+        if carry:
+            ans = str(carry) + ans
             
-            if i >= len(x):
-                #print("i >= len(x) ", i)
-                p = int(y[i])+c
-                c = floor(p/10)
-                res = p%10
-                    
-            elif i >= len(y):
-                #print("i >= len(y) ", i)
-                p = int(x[i])+c
-                c = floor(p/10)
-                res = p%10
-                    
-            else:
-                #print("i < ", i)
-                p = int(x[i])+int(y[i])+c
-                #print("p = ", p)
-                c = floor(p/10)
-                res = p%10
-                
-            #print("res = ", res)
-            ans.append(res)
-            #print("ans = ", ans)
-            i += 1
-        
-        if c:
-            ans.append(c)
-        
-        ans.reverse()
-        return ''.join(str(digit) for digit in ans)
+        return ans
