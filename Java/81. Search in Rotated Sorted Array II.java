@@ -1,24 +1,47 @@
 class Solution {
     public boolean search(int[] nums, int target) {
-        int left = 0, right = nums.length-1;
-        while (left <= right) {
-            int mid = (right-left)/2 + left;
-            if (nums[mid] == target) {
+        int n = nums.length;
+        if (n == 0) {
+            return false;
+        }
+
+        int l = 0, r = n - 1, m;
+
+        while (l <= r) {
+            m = (r - l) / 2 + l;
+            if (nums[m] == target) {
                 return true;
-            } else if (nums[mid] >= nums[left]) {
-                if (nums[left] <= target && target <= nums[mid]) {
-                    right--;
+            }
+
+            if (!binarySearchable(nums, l, nums[m])) {
+                l++;
+                continue;
+            }
+
+            boolean pivot = existsInFirstHalf(nums, l, nums[m]), half = existsInFirstHalf(nums, l, target);
+            if (pivot ^ half) {
+                if (pivot) {
+                    l = m + 1;
                 } else {
-                    left++;
+                    r = m - 1;
                 }
-            } else if (nums[mid] <= nums[right]) {
-                if (nums[mid] <= target && target <= nums[right]) {
-                    left++;
+            } else {
+                if (nums[m] < target) {
+                    l = m + 1;
                 } else {
-                    right--;
+                    r = m - 1;
                 }
             }
         }
+
         return false;
+    }
+
+    private boolean existsInFirstHalf(int[] nums, int l, int n) {
+        return nums[l] <= n;
+    }
+
+    private boolean binarySearchable(int[] nums, int l, int n) {
+        return nums[l] != n;
     }
 }
