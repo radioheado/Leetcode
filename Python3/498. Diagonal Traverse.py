@@ -1,23 +1,24 @@
 class Solution:
     def findDiagonalOrder(self, mat: List[List[int]]) -> List[int]:
-        diagonals = collections.defaultdict(list)
-        
-        m, n = len(mat), len(mat[0])
-        # add each element to its corresponding dict key
-        # the numbers in the same diagonal share the same value
-        # of the sum of their indices
-        for i in range(m):
-            for j in range(n):
-                diagonals[i+j].append(mat[i][j])
-                
-        result = []
-        # if (i+j)%2 == 0, the list should be reversed order
-        for i in range(m+n):
-            temp = diagonals[i]
-            if i%2 == 0:
-                temp = temp[::-1]
-                
-            result.extend(temp)
+        n, m = len(mat), len(mat[0])
+        ans = []
+        turn = False
+
+        for i in range(m + n - 1):
+            temp = []
+            r = 0 if i < m else i - m + 1
+            c = i if i < m else m - 1
+
+            while r < n and c > -1:
+                temp.append(mat[r][c])
+                r += 1
+                c -= 1
             
-        return result
-        
+            if turn:
+                ans.extend(temp)
+            else:
+                ans.extend(temp[::-1])
+            
+            turn = not turn
+
+        return ans
